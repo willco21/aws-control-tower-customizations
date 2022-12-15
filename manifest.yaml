@@ -21,7 +21,6 @@ resources:
     resource_file: template/describe-regions-iam-role.template
     deploy_method: stack_set
     deployment_targets:
-      deployment_targets:
       accounts:
         - 238433677519
       #organizational_units:
@@ -37,7 +36,6 @@ resources:
       parameter_value: '24'
     deploy_method: stack_set
     deployment_targets:
-      deployment_targets:
       accounts:
         - 238433677519
       #organizational_units:
