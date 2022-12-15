@@ -1,0 +1,46 @@
+# Home region for CodePipeline, StepFunctions, Lambda, SSM, StackSets
+region: us-east-1  # Control Tower Home Region
+version: 2021-03-15
+
+resources:
+# Control Tower Custom Service Control Policies - Additional Preventive Guardrails
+  - name: test-preventive-guardrails
+    description: To prevent from deleting or disabling resources in member accounts
+    resource_file: s3://marketplace-sa-resources/ctlabs/preventive-guardrails.json
+    deploy_method: scp
+    #Apply to the following OU(s)
+    deployment_targets:
+      accounts:
+        - 238433677519
+      #organizational_units:
+      #    - Security
+
+# ControlTower Custom CFN Resources - Create Additional IAM Role
+# Control Tower Custom CloudFormation Resources - Create Additional IAM Role
+  - name: create-iam-role
+    resource_file: template/describe-regions-iam-role.template
+    deploy_method: stack_set
+    deployment_targets:
+      deployment_targets:
+      accounts:
+        - 238433677519
+      #organizational_units:
+      #    - Security
+    regions:
+    - ap-northeast-1
+
+# Control Tower Config Rule - Additional Detective Guardrails
+  - name: rotate-access-keys-guardrail
+    resource_file: template/access_keys_rotated.template
+    parameters:
+    - parameter_key: maxAccessKeyAge
+      parameter_value: '24'
+    deploy_method: stack_set
+    deployment_targets:
+      deployment_targets:
+      accounts:
+        - 238433677519
+      #organizational_units:
+      #    - Security
+    regions:
+    - ap-northeast-1
